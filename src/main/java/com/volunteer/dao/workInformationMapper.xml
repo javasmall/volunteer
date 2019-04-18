@@ -1,0 +1,207 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.volunteer.dao.workInformationMapper" >
+  <resultMap id="BaseResultMap" type="com.volunteer.pojo.workInformation" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="name" property="name" jdbcType="VARCHAR" />
+
+    <result column="publisher_id" property="publisherId" jdbcType="BIGINT" />
+    <result column="publish_time" property="publishTime" jdbcType="TIMESTAMP" />
+    <result column="work_campus" property="workCampus" jdbcType="VARCHAR" />
+    <result column="work_department" property="workDepartment" jdbcType="VARCHAR" />
+    <result column="work_addr" property="workAddr" jdbcType="VARCHAR" />
+    <result column="work_tip" property="workTip" jdbcType="VARCHAR" />
+    <result column="work_hour" property="workHour"  />
+    <result column="need_num" property="needNum" jdbcType="INTEGER" />
+    <result column="attend_num" property="attendNum" jdbcType="INTEGER" />
+    <result column="start_time" property="startTime" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, name,  publisher_id, publish_time, work_campus, work_department,
+    work_addr, work_tip, work_hour, need_num, attend_num, start_time
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap"  >
+    select 
+    <include refid="Base_Column_List" />
+    from work_information
+    where id = #{id,jdbcType=INTEGER}
+
+  </select>
+  <select id="selectByteacherid" resultMap="BaseResultMap" parameterType="java.lang.Long">
+    select  <include refid="Base_Column_List"/>
+    from work_information
+    where publisher_id=#{publisherid}
+    order by publish_time asc
+  </select>
+  <select id="getallworkinformation" resultMap="BaseResultMap">
+    select <include refid="Base_Column_List" />
+    from work_information where 1=1
+      <if test="id!=null">
+          and id=#{id}
+      </if>
+      <if test="campus!=null">
+          and work_campus=#{campus}
+      </if>
+      <if test="department!=null">
+         and work_department =#{department}
+      </if>
+   and DATE_SUB(CURDATE(), INTERVAL 3 DAY) &lt;= date(start_time)
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from work_information
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.volunteer.pojo.workInformation" >
+    insert into work_information (id, name,
+      publisher_id, publish_time, work_campus,
+      work_department, work_addr, work_tip, 
+      work_hour, need_num, attend_num, 
+      start_time)
+    values (#{id,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR},
+      #{publisherId,jdbcType=BIGINT}, #{publishTime,jdbcType=TIMESTAMP}, #{workCampus,jdbcType=VARCHAR},
+      #{workDepartment,jdbcType=VARCHAR}, #{workAddr,jdbcType=VARCHAR}, #{workTip,jdbcType=VARCHAR}, 
+      #{workHour}, #{needNum,jdbcType=INTEGER}, #{attendNum,jdbcType=INTEGER},
+      #{startTime,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="com.volunteer.pojo.workInformation" >
+    insert into work_information
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="name != null" >
+        name,
+      </if>
+
+      <if test="publisherId != null" >
+        publisher_id,
+      </if>
+      <if test="publishTime != null" >
+        publish_time,
+      </if>
+      <if test="workCampus != null" >
+        work_campus,
+      </if>
+      <if test="workDepartment != null" >
+        work_department,
+      </if>
+      <if test="workAddr != null" >
+        work_addr,
+      </if>
+      <if test="workTip != null" >
+        work_tip,
+      </if>
+      <if test="workHour != null" >
+        work_hour,
+      </if>
+      <if test="needNum != null" >
+        need_num,
+      </if>
+      <if test="attendNum != null" >
+        attend_num,
+      </if>
+      <if test="startTime != null" >
+        start_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="name != null" >
+        #{name,jdbcType=VARCHAR},
+      </if>
+
+      <if test="publisherId != null" >
+        #{publisherId,jdbcType=BIGINT},
+      </if>
+      <if test="publishTime != null" >
+        #{publishTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="workCampus != null" >
+        #{workCampus,jdbcType=VARCHAR},
+      </if>
+      <if test="workDepartment != null" >
+        #{workDepartment,jdbcType=VARCHAR},
+      </if>
+      <if test="workAddr != null" >
+        #{workAddr,jdbcType=VARCHAR},
+      </if>
+      <if test="workTip != null" >
+        #{workTip,jdbcType=VARCHAR},
+      </if>
+      <if test="workHour != null" >
+        #{workHour},
+      </if>
+      <if test="needNum != null" >
+        #{needNum,jdbcType=INTEGER},
+      </if>
+      <if test="attendNum != null" >
+        #{attendNum,jdbcType=INTEGER},
+      </if>
+      <if test="startTime != null" >
+        #{startTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.volunteer.pojo.workInformation" >
+    update work_information
+    <set >
+      <if test="name != null" >
+        name = #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="publisherId != null" >
+        publisher_id = #{publisherId,jdbcType=BIGINT},
+      </if>
+      <if test="publishTime != null" >
+        publish_time = #{publishTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="workCampus != null" >
+        work_campus = #{workCampus,jdbcType=VARCHAR},
+      </if>
+      <if test="workDepartment != null" >
+        work_department = #{workDepartment,jdbcType=VARCHAR},
+      </if>
+      <if test="workAddr != null" >
+        work_addr = #{workAddr,jdbcType=VARCHAR},
+      </if>
+      <if test="workTip != null" >
+        work_tip = #{workTip,jdbcType=VARCHAR},
+      </if>
+      <if test="workHour != null" >
+        work_hour = #{workHour,jdbcType=DOUBLE},
+      </if>
+      <if test="needNum != null" >
+        need_num = #{needNum,jdbcType=INTEGER},
+      </if>
+      <if test="attendNum != null" >
+        attend_num = #{attendNum,jdbcType=INTEGER},
+      </if>
+      <if test="startTime != null" >
+        start_time = #{startTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.volunteer.pojo.workInformation" >
+    update work_information
+    set name = #{name,jdbcType=VARCHAR},
+
+      publisher_id = #{publisherId,jdbcType=BIGINT},
+      publish_time = #{publishTime,jdbcType=TIMESTAMP},
+      work_campus = #{workCampus,jdbcType=VARCHAR},
+      work_department = #{workDepartment,jdbcType=VARCHAR},
+      work_addr = #{workAddr,jdbcType=VARCHAR},
+      work_tip = #{workTip,jdbcType=VARCHAR},
+      work_hour = #{workHour},
+      need_num = #{needNum,jdbcType=INTEGER},
+      attend_num = #{attendNum,jdbcType=INTEGER},
+      start_time = #{startTime,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateneednumdeleteone" >
+    update work_information
+    set attend_num=attend_num-1
+    where id=#{workid}
+  </update>
+</mapper>

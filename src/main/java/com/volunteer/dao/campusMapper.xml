@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.volunteer.dao.campusMapper" >
+  <resultMap id="BaseResultMap" type="com.volunteer.pojo.campus" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="campus_name" property="campusName" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, campus_name
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from campus
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <select id="selectall" resultType="campus">
+    select * from campus;
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from campus
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.volunteer.pojo.campus" >
+    insert into campus (id, campus_name)
+    values (#{id,jdbcType=INTEGER}, #{campusName,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.volunteer.pojo.campus" >
+    insert into campus
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="campusName != null" >
+        campus_name,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="campusName != null" >
+        #{campusName,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.volunteer.pojo.campus" >
+    update campus
+    <set >
+      <if test="campusName != null" >
+        campus_name = #{campusName,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.volunteer.pojo.campus" >
+    update campus
+    set campus_name = #{campusName,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

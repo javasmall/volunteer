@@ -1,0 +1,159 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.volunteer.dao.studentMapper" >
+  <resultMap id="BaseResultMap" type="com.volunteer.pojo.student" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="student_id" property="studentId" jdbcType="BIGINT" />
+    <result column="name" property="name" jdbcType="VARCHAR" />
+    <result column="sex" property="sex" jdbcType="VARCHAR" />
+    <result column="phone" property="phone" jdbcType="BIGINT" />
+    <result column="college" property="college" jdbcType="VARCHAR" />
+    <result column="major" property="major" jdbcType="VARCHAR" />
+    <result column="date" property="date" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, student_id, name, sex, phone, college, major, date
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap"  >
+    select 
+    <include refid="Base_Column_List" />
+    from student
+    where student_id = #{studentid}
+  </select>
+  <select id="getallstudent" resultType="student">
+    select * from student where 1=1
+    <if test="studentid!=null">
+      and student_id=#{studentid}
+    </if>
+    <if test="name!=null">
+      and name=#{name}
+    </if>
+    <if test="sex!=null">
+      and sex=#{sex}
+    </if>
+    <if test="college!=null">
+      and college=#{college}
+    </if>
+    <if test="major!=null">
+      and major=#{major}
+    </if>
+    <if test="inyear!=null">
+      and in_year=#{inyear}
+    </if>
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from student
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.volunteer.pojo.student" >
+    insert into student (id, student_id, name, 
+      sex, phone, college, 
+      major, date)
+    values (#{id,jdbcType=INTEGER}, #{studentId,jdbcType=BIGINT}, #{name,jdbcType=VARCHAR}, 
+      #{sex,jdbcType=VARCHAR}, #{phone,jdbcType=BIGINT}, #{college,jdbcType=VARCHAR}, 
+      #{major,jdbcType=VARCHAR}, #{date,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.volunteer.pojo.student" >
+    insert into student
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="studentId != null" >
+        student_id,
+      </if>
+      <if test="name != null" >
+        name,
+      </if>
+      <if test="sex != null" >
+        sex,
+      </if>
+      <if test="phone != null" >
+        phone,
+      </if>
+      <if test="college != null" >
+        college,
+      </if>
+      <if test="major != null" >
+        major,
+      </if>
+      <if test="date != null" >
+        date,
+      </if>
+      <if test="inYear != null" >
+        in_year,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="studentId != null" >
+        #{studentId,jdbcType=BIGINT},
+      </if>
+      <if test="name != null" >
+        #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="sex != null" >
+        #{sex,jdbcType=VARCHAR},
+      </if>
+      <if test="phone != null" >
+        #{phone,jdbcType=BIGINT},
+      </if>
+      <if test="college != null" >
+        #{college,jdbcType=VARCHAR},
+      </if>
+      <if test="major != null" >
+        #{major,jdbcType=VARCHAR},
+      </if>
+      <if test="date != null" >
+        #{date,jdbcType=VARCHAR},
+      </if>
+      <if test="inYear != null" >
+        #{inYear},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.volunteer.pojo.student" >
+    update student
+    <set >
+      <if test="studentId != null" >
+        student_id = #{studentId,jdbcType=BIGINT},
+      </if>
+      <if test="name != null" >
+        name = #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="sex != null" >
+        sex = #{sex,jdbcType=VARCHAR},
+      </if>
+      <if test="phone != null" >
+        phone = #{phone,jdbcType=BIGINT},
+      </if>
+      <if test="college != null" >
+        college = #{college,jdbcType=VARCHAR},
+      </if>
+      <if test="major != null" >
+        major = #{major,jdbcType=VARCHAR},
+      </if>
+      <if test="date != null" >
+        date = #{date,jdbcType=VARCHAR},
+      </if>
+      <if test="inYear != null" >
+       in_year= #{inYear},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.volunteer.pojo.student" >
+    update student
+    set student_id = #{studentId,jdbcType=BIGINT},
+      name = #{name,jdbcType=VARCHAR},
+      sex = #{sex,jdbcType=VARCHAR},
+      phone = #{phone,jdbcType=BIGINT},
+      college = #{college,jdbcType=VARCHAR},
+      major = #{major,jdbcType=VARCHAR},
+      date = #{date,jdbcType=VARCHAR}
+      in_year=#{inYear}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

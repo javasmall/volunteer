@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.volunteer.dao.workAttendMapper" >
+  <resultMap id="BaseResultMap" type="com.volunteer.pojo.workAttend" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="student_name" property="studentName" jdbcType="VARCHAR" />
+    <result column="student_id" property="studentId" jdbcType="BIGINT" />
+    <result column="work_id" property="workId" jdbcType="INTEGER" />
+    <result column="work_name" property="workName" jdbcType="VARCHAR" />
+    <result column="isfinished" property="isfinished" jdbcType="TINYINT" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, student_name, student_id, work_id, work_name, isfinished
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap"  >
+    select 
+    <include refid="Base_Column_List" />
+    from work_attend
+    where student_id = #{studentid}
+    order by id desc
+  </select>
+
+  <select id="getallworkattend" resultType="workAttend">
+    select * from work_attend where work_id=#{workid}
+
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from work_attend
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteattendwork" >
+    delete from work_attend
+    where work_id=#{workid}
+    and student_id=#{studentid}
+  </delete>
+  <insert id="insert" parameterType="com.volunteer.pojo.workAttend" >
+    insert into work_attend (id, student_name, student_id, 
+      work_id, work_name, isfinished
+      )
+    values (#{id,jdbcType=INTEGER}, #{studentName,jdbcType=VARCHAR}, #{studentId,jdbcType=BIGINT}, 
+      #{workId,jdbcType=INTEGER}, #{workName,jdbcType=VARCHAR}, #{isfinished,jdbcType=TINYINT}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.volunteer.pojo.workAttend" >
+    insert into work_attend
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="studentName != null" >
+        student_name,
+      </if>
+      <if test="studentId != null" >
+        student_id,
+      </if>
+      <if test="workId != null" >
+        work_id,
+      </if>
+      <if test="workName != null" >
+        work_name,
+      </if>
+      <if test="isfinished != null" >
+        isfinished,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="studentName != null" >
+        #{studentName,jdbcType=VARCHAR},
+      </if>
+      <if test="studentId != null" >
+        #{studentId,jdbcType=BIGINT},
+      </if>
+      <if test="workId != null" >
+        #{workId,jdbcType=INTEGER},
+      </if>
+      <if test="workName != null" >
+        #{workName,jdbcType=VARCHAR},
+      </if>
+      <if test="isfinished != null" >
+        #{isfinished,jdbcType=TINYINT},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.volunteer.pojo.workAttend" >
+    update work_attend
+    <set >
+      <if test="studentName != null" >
+        student_name = #{studentName,jdbcType=VARCHAR},
+      </if>
+      <if test="studentId != null" >
+        student_id = #{studentId,jdbcType=BIGINT},
+      </if>
+      <if test="workId != null" >
+        work_id = #{workId,jdbcType=INTEGER},
+      </if>
+      <if test="workName != null" >
+        work_name = #{workName,jdbcType=VARCHAR},
+      </if>
+      <if test="isfinished != null" >
+        isfinished = #{isfinished,jdbcType=TINYINT},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.volunteer.pojo.workAttend" >
+    update work_attend
+    set student_name = #{studentName,jdbcType=VARCHAR},
+      student_id = #{studentId,jdbcType=BIGINT},
+      work_id = #{workId,jdbcType=INTEGER},
+      work_name = #{workName,jdbcType=VARCHAR},
+      isfinished = #{isfinished,jdbcType=TINYINT}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

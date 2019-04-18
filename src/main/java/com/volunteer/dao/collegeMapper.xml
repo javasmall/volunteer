@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.volunteer.dao.collegeMapper" >
+  <resultMap id="BaseResultMap" type="com.volunteer.pojo.college" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="colloge" property="colloge" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, colloge
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from college
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <select id="getallcollege" resultType="college">
+    select * from college
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from college
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.volunteer.pojo.college" >
+    insert into college (id, colloge)
+    values (#{id,jdbcType=INTEGER}, #{colloge,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.volunteer.pojo.college" >
+    insert into college
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="colloge != null" >
+        colloge,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="colloge != null" >
+        #{colloge,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.volunteer.pojo.college" >
+    update college
+    <set >
+      <if test="colloge != null" >
+        colloge = #{colloge,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.volunteer.pojo.college" >
+    update college
+    set colloge = #{colloge,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>
