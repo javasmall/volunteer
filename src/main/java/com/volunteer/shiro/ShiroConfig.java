@@ -42,9 +42,9 @@ public class ShiroConfig {
 
 //		filterMap.put("/testThymeleaf", "anon");
 		//放行login.html页面
-		filterMap.put("/**","anon");
+//		filterMap.put("/**","anon");
 
-//		filterMap.put("/login", "anon");//要将登陆的接口放出来，不然没权限访问登陆的接口
+		filterMap.put("/login", "anon");//要将登陆的接口放出来，不然没权限访问登陆的接口
 ////		filterMap.put("/getcontroller","anon");
 ////
 //		//授权过滤器
@@ -52,7 +52,7 @@ public class ShiroConfig {
 //
 //
 ////
-//		filterMap.put("/**", "authc");//authc即为认证登陆后即可访问
+		filterMap.put("/**", "authc");//authc即为认证登陆后即可访问
 		
 //		//修改调整的登录页面
 		shiroFilterFactoryBean.setLoginUrl("/noauth");

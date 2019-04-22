@@ -3,6 +3,7 @@ package com.volunteer.controller;
 import com.volunteer.Result.Result;
 import com.volunteer.dao.usersMapper;
 import com.volunteer.pojo.users;
+import com.volunteer.service.userService;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.IncorrectCredentialsException;
 import org.apache.shiro.authc.UnknownAccountException;
@@ -26,6 +27,7 @@ import java.util.Map;
 public class LoginController {
     private static final Logger logger= LoggerFactory.getLogger(LoginController.class);
    @Autowired(required = false)
+   userService userService;
    @ResponseBody
     @PostMapping("login")
     public Result<Object> login(String username, String password, HttpServletRequest request)
@@ -44,7 +46,8 @@ public class LoginController {
         //3.执行登录方法
         try {
             subject.login(token);
-
+            users users=userService.getuserbyusername(username);
+            cookie.put("role",users.getRole());
             //登录成功
             //跳转到test.html
             return Result.success(cookie);
