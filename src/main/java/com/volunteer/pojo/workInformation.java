@@ -28,6 +28,8 @@ public class workInformation {
 
     private String startTime;
 
+    private int status;
+
     public Integer getId() {
         return id;
     }
@@ -129,5 +131,13 @@ public class workInformation {
 
     public void setWorkHour(Double workHour) {
         this.workHour = workHour;
+    }
+
+    public int getStatus() {
+        return status;
+    }
+
+    public void setStatus(int status) {
+        this.status = status;
     }
 }

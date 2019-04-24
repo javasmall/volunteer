@@ -1,6 +1,5 @@
 package com.volunteer.controller;
 
-import com.sun.org.apache.regexp.internal.RE;
 import com.volunteer.Result.Result;
 import com.volunteer.check.checkService;
 import com.volunteer.dao.workInformationMapper;
@@ -8,7 +7,6 @@ import com.volunteer.pojo.workInformation;
 import com.volunteer.service.publisherService;
 import com.volunteer.service.workService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
@@ -64,12 +62,12 @@ public class teacherController {
         }
     }
     @GetMapping("getallworkbyteacherid")
-    public Result<Map> getallworkbyteacherid(String publisherid)
+    public Result<Map> getallworkbyteacherid(String publisherid,String workid,String campus,String department)
     {
         Map<String,Object> work=new HashMap();
         if(publisherid.equals(null)){return Result.error("请检查参数",work);}
           try {
-              work=workService.getallworkbyteacherid(Long.parseLong(publisherid));
+              work=workService.getallworkbyteacherid(Long.parseLong(publisherid),workid,campus,department);
               return Result.success(work);
           }
           catch (Exception e)

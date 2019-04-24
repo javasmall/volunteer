@@ -15,10 +15,11 @@
     <result column="need_num" property="needNum" jdbcType="INTEGER" />
     <result column="attend_num" property="attendNum" jdbcType="INTEGER" />
     <result column="start_time" property="startTime" jdbcType="TIMESTAMP" />
+    <result column="status" property="status"/>
   </resultMap>
   <sql id="Base_Column_List" >
     id, name,  publisher_id, publish_time, work_campus, work_department,
-    work_addr, work_tip, work_hour, need_num, attend_num, start_time
+    work_addr, work_tip, work_hour, need_num, attend_num, start_time,status
   </sql>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap"  >
     select 
@@ -31,6 +32,15 @@
     select  <include refid="Base_Column_List"/>
     from work_information
     where publisher_id=#{publisherid}
+    <if test="workid!=null">
+    and id=#{workid}
+    </if>
+    <if test="campus!=null">
+      and work_campus=#{campus}
+    </if>
+    <if test="department!=null">
+      and work_department=#{department}
+    </if>
     order by publish_time asc
   </select>
   <select id="getallworkinformation" resultMap="BaseResultMap">
@@ -45,7 +55,7 @@
       <if test="department!=null">
          and work_department =#{department}
       </if>
-   and DATE_SUB(CURDATE(), INTERVAL 3 DAY) &lt;= date(start_time)
+
   </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
     delete from work_information
@@ -180,6 +190,9 @@
       <if test="startTime != null" >
         start_time = #{startTime,jdbcType=TIMESTAMP},
       </if>
+      <if test="status !=null">
+        status=#{status}
+      </if>
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
@@ -197,6 +210,7 @@
       need_num = #{needNum,jdbcType=INTEGER},
       attend_num = #{attendNum,jdbcType=INTEGER},
       start_time = #{startTime,jdbcType=TIMESTAMP}
+      status=#{status}
     where id = #{id,jdbcType=INTEGER}
   </update>
   <update id="updateneednumdeleteone" >

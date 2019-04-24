@@ -16,8 +16,6 @@ public class VolunteerApplication  extends SpringBootServletInitializer {
     protected SpringApplicationBuilder configure(SpringApplicationBuilder application) {
         return application.sources(VolunteerApplication.class);
     }
-
-
     public static void main(String[] args) {
         SpringApplication.run(VolunteerApplication.class, args);
     }

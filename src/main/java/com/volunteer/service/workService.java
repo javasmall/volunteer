@@ -47,10 +47,10 @@ public class workService {
         return map;
     }
 
-    public Map getallworkbyteacherid(long publisherid)
+    public Map getallworkbyteacherid(long publisherid, String workid, String campus, String department)
     {
 
-        List<workInformation> list=  workInformationMapper.selectByteacherid(publisherid);
+        List<workInformation> list=  workInformationMapper.selectByteacherid(publisherid,workid,campus,department);
         Map<String,List>map=new HashMap<>();
         int i=0,size=list.size();workInformation team=new workInformation();
         List<workInformation>ison=new ArrayList<>();List<workInformation>overtime=new ArrayList<>();
@@ -97,7 +97,7 @@ public class workService {
         long hour=(date.getTime()-now.getTime())/1000/60/60;
         if(hour<8){return Result.error("8小时内不允许取消",false);}
         else{
-            if (workInformationMapper.deleteByPrimaryKey(id,publisherid))//删除对应的attend表
+            if (workInformationMapper.cancelwork(id,publisherid))//修改对应的attend表
             {
                 workAttendMapper.deletebyworkid(id);
                 return Result.success(true);
