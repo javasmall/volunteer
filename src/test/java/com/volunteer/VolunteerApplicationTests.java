@@ -2,6 +2,7 @@ package com.volunteer;
 
 
 import com.volunteer.Result.Result;
+import com.volunteer.service.studentService;
 import org.junit.Test;
 
 import org.junit.runner.RunWith;
@@ -12,6 +13,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import java.text.ParseException;
+import java.util.List;
 
 
 @RunWith(SpringRunner.class)
@@ -21,6 +23,8 @@ public class VolunteerApplicationTests {
    private  static final Logger logger= LoggerFactory.getLogger(VolunteerApplicationTests.class);
     @Autowired(required = false)
     com.volunteer.service.workAttendService workAttendService;
+    @Autowired(required = false)
+    com.volunteer.service.studentService studentService;
     @Test
     public void contextLoads()  {
 
@@ -28,10 +32,8 @@ public class VolunteerApplicationTests {
     @Test
     public void test1()
     {
-        String a="162210702234";
-        Result result =workAttendService.getworktimethisterm(Long.parseLong(a));
-        logger.info(result.getData().toString());
-
+       Result result =studentService.getallstudent(null,null,null,null,null,null);
+       logger.info(result.getData().toString());
     }
     @Test
     public void test2() throws ParseException {

@@ -6,6 +6,7 @@ import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
+import java.util.Map;
 
 @Mapper
 public interface studentMapper {
@@ -16,8 +17,8 @@ public interface studentMapper {
     boolean insertSelective(student record);
 
     student selectByPrimaryKey(long studentid);
-    List<student>getallstudent(@Param("studentid")String studentid,@Param("name")String name,@Param("sex")String sex
-                               ,@Param("college")String college,@Param("major")String major,@Param("inyear")String inyear);
+    List<Map>getallstudent(@Param("studentid")String studentid, @Param("name")String name, @Param("sex")String sex
+                               , @Param("college")String college, @Param("major")String major, @Param("inyear")String inyear);
     int updateByPrimaryKeySelective(student record);
 
     int updateByPrimaryKey(student record);

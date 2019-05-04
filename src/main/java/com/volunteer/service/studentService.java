@@ -12,10 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.transaction.interceptor.TransactionAspectSupport;
 
 import java.text.SimpleDateFormat;
-import java.util.Calendar;
 import java.util.Date;
-import java.util.List;
-import java.util.Map;
 
 
 @Service
@@ -26,9 +23,17 @@ public class studentService {
     majorMapper majorMapepr;
     @Autowired(required = false)
     usersMapper usersmapper;
-    public List<student>getallstudent(String studentid, String name, String sex, String college, String major,String inyear)
+    public Result<Object> getallstudent(String studentid, String name, String sex, String college, String major, String inyear)
     {
-        return studentMapper.getallstudent(studentid,name,sex,college,major,inyear);
+        try {
+            return Result.success(studentMapper.getallstudent(studentid,name,sex,college,major,inyear));
+        }
+        catch (Exception e)
+        {
+            e.printStackTrace();
+            return Result.error(false);
+        }
+
     }
 
     @Transactional

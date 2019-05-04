@@ -60,7 +60,7 @@ public class publicController {
     @GetMapping("getstudentinformation")
     public Result<Object>getstudentinformation(String studentid,String name,String sex,String college,String major,String inyear)
     {
-        return Result.success(studentService.getallstudent(studentid,name,sex,college,major,inyear));
+        return studentService.getallstudent(studentid,name,sex,college,major,inyear);
     }
     @GetMapping("getworkattendbyworkid")
     public Result<Object>getworkattendbyworkid(String workid)

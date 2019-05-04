@@ -20,25 +20,33 @@
     from student
     where student_id = #{studentid}
   </select>
-  <select id="getallstudent" resultType="student">
-    select * from student where 1=1
+  <select id="getallstudent" resultType="Map">
+    select s.*,coalesce(s2.worktime,0) as worktime  from student s left join    (SELECT student_id, SUM(b.work_hour) worktime
+    FROM work_attend a,work_information b
+    WHERE DATE_FORMAT(b.start_time,'%Y-%m-%d') BETWEEN '2019-04-01 11:14:17' AND '2019-05-01 11:14:17'
+    AND a.work_id=b.id
+    AND a.isfinished=1
+
+    GROUP BY a.student_id,a.isfinished)s2
+    on s.student_id=s2.student_id
+    where 1=1
     <if test="studentid!=null">
-      and student_id=#{studentid}
+      and s.student_id=#{studentid}
     </if>
     <if test="name!=null">
-      and name=#{name}
+      and s.name=#{name}
     </if>
     <if test="sex!=null">
-      and sex=#{sex}
+      and s.sex=#{sex}
     </if>
     <if test="college!=null">
-      and college=#{college}
+      and s.college=#{college}
     </if>
     <if test="major!=null">
-      and major=#{major}
+      and s.major=#{major}
     </if>
     <if test="inyear!=null">
-      and in_year=#{inyear}
+      and s.in_year=#{inyear}
     </if>
   </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
