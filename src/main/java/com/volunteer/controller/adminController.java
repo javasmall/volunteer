@@ -7,8 +7,9 @@ import com.alibaba.excel.read.event.AnalysisEventListener;
 import com.alibaba.excel.support.ExcelTypeEnum;
 
 
+import com.fasterxml.jackson.databind.JavaType;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.volunteer.Result.Result;
-import com.volunteer.pojo.student;
 import com.volunteer.service.publisherService;
 import com.volunteer.service.studentService;
 import com.volunteer.service.userService;
@@ -24,6 +25,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -112,20 +114,39 @@ public class adminController {
         }
 
     }
+
+    private static ObjectMapper MAPPER = new ObjectMapper();
     @PostMapping("addpublisher")
-    public Result<Object>addstudentuser(String publisherid,String password,String name,String phone,String location)
-    {
-        try {
-            if(publisherid.equals("")||name.equals("")||phone.equals("")||location.equals("")||password.equals(""))
-            {
-                return Result.error("请检查信息完整性",false);
-            }
-            else
-            {
-                return publisherService.addpublisher(publisherid,password,name,phone,location);
-            }
-        }catch (Exception e)
-        {e.printStackTrace();return Result.error(false);}
+    public Result addstudentuser(String publist) throws IOException {
+        //json转map<String,String>
+        JavaType jt = MAPPER.getTypeFactory().constructParametricType(ArrayList.class, HashMap.class);
+        List<Map> publist1 = MAPPER.readValue(publist, jt);
+        int suncess=0;
+        if (publist1==null){return Result.error(false);}
+        for(int i=0;i<publist1.size();i++)
+        {
+            Map<String,String> pub=publist1.get(i);
+            String publisherid=String.valueOf(pub.get("publisherid"));
+            String password=String.valueOf(pub.get("password"));
+            String name=pub.get("name");
+            String phone=String.valueOf(pub.get("phone"));
+            String location=pub.get("location");
+            try {
+                if(publisherid.equals("")||name.equals("")||phone.equals("")||location.equals("")||password.equals(""))
+                {
+                   continue;
+                }
+                else
+                {
+                     publisherService.addpublisher(publisherid,password,name,phone,location);
+                     suncess++;
+                }
+            }catch (Exception e)
+            {e.printStackTrace();}
+
+        }
+        return Result.success("成功插入:"+suncess+"条，失败："+(publist1.size()-suncess)+"条");
+
     }
     @PostMapping("deletestudentuser")
     public Result<Object>deletestudentuser(String studentid)
