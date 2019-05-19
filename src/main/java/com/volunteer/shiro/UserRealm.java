@@ -43,9 +43,9 @@ public class UserRealm extends AuthorizingRealm{
 		users user = (users) subject.getPrincipal();
 		users dbUser = usersMapper.selectByPrimaryKey(user.getId());
 
-		info.addStringPermission("user:"+dbUser.getRole());
-		System.out.println("user:"+dbUser.getRole());
-
+		//info.addStringPermission("user:"+dbUser.getRole());
+		info.addRole(dbUser.getRole());
+		logger.info(dbUser.getRole());
 		return info;
 	}
 	/**

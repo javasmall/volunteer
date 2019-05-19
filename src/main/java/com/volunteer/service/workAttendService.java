@@ -39,12 +39,14 @@ public class workAttendService {
     }
 
     @Transactional
-    public boolean insertworkattend(String workid, String studentid) {
+    public boolean insertworkattend(String workid, long studentid) {
         try {
             workInformation workInformation =workInformationMapper.getallworkinformation(workid, null, null).get(0);
             int need=workInformation.getNeedNum();
             int attend=workInformation.getAttendNum();
-            student student=studentMapepr.selectByPrimaryKey(Long.parseLong(studentid));
+
+            student student=studentMapepr.selectByPrimaryKey(studentid);
+            logger.info(studentid+" "+2);
             if(need-attend<=0||student==null)
             {
                 return false;
@@ -55,7 +57,7 @@ public class workAttendService {
                 workService.updatework(workInformation);
                 workAttend workAttend=new workAttend();
                 workAttend.setIsfinished(false);
-                workAttend.setStudentId(Long.parseLong(studentid));
+                workAttend.setStudentId(studentid);
                 workAttend.setStudentName(student.getName());
                 workAttend.setWorkId(workInformation.getId());
                 workAttend.setWorkName(workInformation.getName());
@@ -74,9 +76,9 @@ public class workAttendService {
     }
 
 
-    public boolean deleteattendwork(String workid, String studentid) {
+    public boolean deleteattendwork(String workid, long studentid) {
         try {
-            boolean jud=workAttendMapper.deleteattendwork(Integer.parseInt(workid),Long.parseLong(studentid));
+            boolean jud=workAttendMapper.deleteattendwork(Integer.parseInt(workid),studentid);
             if(!jud){
                 TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();//手动事务回滚
                  return false;}
@@ -95,23 +97,26 @@ public class workAttendService {
         return workAttendMapper.getworkfinishedbystuid(studentid);
     }
 
+    /**
+     *
+     * @param studnetid 学号
+     * @return 返回本学期的义工工时
+     */
     public Result<Object> getworktimethisterm(long studnetid) {
-        Calendar calendar=Calendar.getInstance();
+        Calendar calendar=Calendar.getInstance();//获取一个calender对象
         int year=calendar.get(Calendar.YEAR);
         int month=calendar.get(Calendar.MONTH)+1;
-
-        SimpleDateFormat sd = new SimpleDateFormat("yyyy-MM-dd");
-
-        if(month<2){
-            calendar.set(year-1,8-1,30);
+        SimpleDateFormat sd = new SimpleDateFormat("yyyy-MM-dd");//格式
+        if(month<2){//2月前是前一年8.30开始
+            calendar.set(year-1,8-1,30);//月份-1表示当前月份   year-1表示上一年
         }
-        else if(month>=8)
+        else if(month>=8)//大于8月开始日期是8.30
         {
             calendar.set(year,8-1,30);
         }
         else calendar.set(year,2-1,10);
         logger.info(calendar.toString()+" "+new Date());
-        return Result.success(workAttendMapper.getworkhourthisterm(studnetid,calendar.getTime(),new Date()));
+        return Result.success(workAttendMapper.getworkhourthisterm(studnetid,calendar.getTime(),new Date()));//两个时间段查询
     }
 
     public Result<Object> getallworkhour(String studentid) {

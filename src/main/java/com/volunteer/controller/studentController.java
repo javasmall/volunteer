@@ -1,14 +1,18 @@
 package com.volunteer.controller;
 
 import com.volunteer.Result.Result;
+import com.volunteer.pojo.users;
 import com.volunteer.pojo.workAttend;
 import com.volunteer.service.studentService;
 import com.volunteer.service.workAttendService;
 import com.volunteer.service.workService;
+import org.apache.shiro.SecurityUtils;
+import org.apache.shiro.subject.Subject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 @RestController
@@ -21,16 +25,19 @@ public class studentController {
     @Autowired(required = false)
     studentService studentService;
     @PostMapping("orderwork")
-    public Result<Object>orderwork(String workid,String studentid)
+    public Result<Object>orderwork(String workid)
     {
+        Subject subject = SecurityUtils.getSubject();
+        users student=(users)subject.getPrincipal();
+
         try {
-           Boolean jud= workAttendService.insertworkattend(workid,studentid);
+           Boolean jud= workAttendService.insertworkattend(workid,student.getUsername());
            if(jud)
                return Result.success(jud);
            else
                return Result.error("预约失败",false);
         }
-        catch (Exception e){return Result.error(false);}
+        catch (Exception e){e.printStackTrace();return Result.error(false);}
     }
     @GetMapping("getattendfinishbystuid")
     public  List<workAttend> getattendfinishbystuid(long studentid)
@@ -52,9 +59,11 @@ public class studentController {
 
     }
     @PostMapping("deleteattendwork")
-    public Result<Object>deleteattendwork(String workid,String studentid)
+    public Result<Object>deleteattendwork(String workid)
     {
-        if(workAttendService.deleteattendwork(workid,studentid))
+        Subject subject = SecurityUtils.getSubject();
+        users student=(users)subject.getPrincipal();
+        if(workAttendService.deleteattendwork(workid,student.getUsername()))
             return Result.success(true);
         else
         return Result.error(false);

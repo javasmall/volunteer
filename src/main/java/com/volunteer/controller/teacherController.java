@@ -135,6 +135,9 @@ public class teacherController {
             return publisherService.updatepublisherpassword(publisherid,oldpassword,newpassword);
         }catch (Exception e){e.printStackTrace();return Result.error(false);}
     }
+    /*
+    核实义工活动
+     */
     @PostMapping("checkactivity")
     public Result<Object>checkactivity(int workid,long publisherid,long studentid[])
     {

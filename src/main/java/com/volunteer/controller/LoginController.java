@@ -67,4 +67,11 @@ public class LoginController {
     {
         return Result.error((String)"请求失败，请先登录");
     }
+    @ResponseBody
+    @GetMapping("norole")
+    public Result<String> norole()
+    {
+        return Result.error((String)"请求失败，权限不足");
+    }
+
 }
