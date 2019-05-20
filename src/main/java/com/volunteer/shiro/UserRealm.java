@@ -45,7 +45,7 @@ public class UserRealm extends AuthorizingRealm{
 
 		//info.addStringPermission("user:"+dbUser.getRole());
 		info.addRole(dbUser.getRole());
-		logger.info(dbUser.getRole());
+		logger.info(dbUser.getRole()+"roles[student,admin]");
 		return info;
 	}
 	/**

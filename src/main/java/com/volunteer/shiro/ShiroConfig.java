@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
+import javax.servlet.Filter;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
@@ -24,9 +25,10 @@ public class ShiroConfig {
 	@Bean
 	public ShiroFilterFactoryBean getShiroFilterFactoryBean(@Qualifier("securityManager")DefaultWebSecurityManager securityManager){
 		ShiroFilterFactoryBean shiroFilterFactoryBean = new ShiroFilterFactoryBean();
-		
+
 		//设置安全管理器
 		shiroFilterFactoryBean.setSecurityManager(securityManager);
+
 		
 		//添加Shiro内置过滤器
 		/**
@@ -38,6 +40,9 @@ public class ShiroConfig {
 		 *       perm： 该资源必须得到资源权限才可以访问
 		 *       role: 该资源必须得到角色权限才可以访问
 		 */
+		Map<String, Filter> filtersMap = new LinkedHashMap<>();
+		filtersMap.put("rolesFilter",new rolesFilter());
+		shiroFilterFactoryBean.setFilters(filtersMap);
 		Map<String,String> filterMap = new LinkedHashMap<String,String>();
 
 //		filterMap.put("/testThymeleaf", "anon");
@@ -51,8 +56,9 @@ public class ShiroConfig {
 //		//授权过滤器
 //		//注意：当前授权拦截后，shiro会自动跳转到未授权页面
         filterMap.put("/admin/**","roles[admin]");
-        filterMap.put("/teacher/**","roles[publisher],roles[admin]");
-        filterMap.put("/student/**","roles[student]");
+        filterMap.put("/teacher/**","rolesFilter[publisher,admin]");
+        filterMap.put("/student/**","rolesFilter[student,admin]");
+
 		filterMap.put("/**", "authc");//authc即为认证登陆后即可访问
 //		//修改调整的登录页面
 		shiroFilterFactoryBean.setLoginUrl("/noauth");
@@ -82,5 +88,10 @@ public class ShiroConfig {
 	public UserRealm getRealm(){
 		return new UserRealm();
 	}
+
+//	public rolesFilter rolesFilter()
+//	{
+//		return  new rolesFilter();
+//	}
 
 }
