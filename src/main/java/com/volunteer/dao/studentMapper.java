@@ -4,6 +4,7 @@ import com.volunteer.pojo.student;
 import org.apache.ibatis.annotations.Delete;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
+import org.apache.ibatis.annotations.Select;
 
 import java.util.List;
 import java.util.Map;
@@ -25,4 +26,7 @@ public interface studentMapper {
 
     @Delete("delete from student where student_id=#{studentid}")
     boolean deletebyid(long studentid);
+
+    @Select("select * from student")
+    List<student> getallstudentinfo();
 }

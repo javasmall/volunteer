@@ -48,10 +48,11 @@ public class publisherService {
             e.printStackTrace();return Result.error(false);
         }
     }
-
+      //pubiser的外键是users。只需判断publisher是否为空即可判断删除。
     public Result<Object> deletebypublisherid(String publisherid) {
         try {
-            if(publisherMapper.deletebypublisherid(Long.parseLong(publisherid)))
+            publisher publisher=publisherMapper.getpublisherbypublid(Long.parseLong(publisherid));
+            if(publisher!=null)
             {
                 usermapper.deletebyusername(Long.parseLong(publisherid));
                 return Result.success(true);

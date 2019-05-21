@@ -70,8 +70,11 @@ public class studentController {
     }
 
     @PostMapping("updatestudentinformation")
-    public Result<Object>updatestudentinformation(String studentid,String phone,String major,String sex,String inyear)
+    public Result<Object>updatestudentinformation(String phone,String major,String inyear,String sex)
     {
+        Subject subject = SecurityUtils.getSubject();
+        users student=(users)subject.getPrincipal();
+        long studentid=student.getUsername();
         try {
             return studentService.updateuser(studentid,phone,major,inyear,sex);
         }

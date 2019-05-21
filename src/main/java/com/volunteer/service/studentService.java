@@ -65,10 +65,16 @@ public class studentService {
         }
     }
 
-
+    /**
+     * 首先要在student表查找是否有该学生，如果有删除users表的studnet因为外键会自动删除不需要手动删除
+     * @param studentid  学号
+     * @return 结果信息
+     */
+    @Transactional
     public Result<Object> deletestudentuser(long studentid) {
         try {
-            if(studentMapper.deletebyid(studentid)) {
+            student student=studentMapper.selectByPrimaryKey(studentid);
+            if(student!=null) {
                 usersmapper.deletebyusername(studentid);
                 return Result.success(true);
             }
@@ -82,9 +88,9 @@ public class studentService {
         }
     }
 
-    public Result<Object> updateuser(String studentid, String phone, String major,String inyear, String sex) {
+    public Result<Object> updateuser(long studentid, String phone, String major,String inyear, String sex) {
         try {
-            student student=studentMapper.selectByPrimaryKey(Long.parseLong(studentid));
+            student student=studentMapper.selectByPrimaryKey(studentid);
             if(student==null){return Result.error("不存在此id",false);}
             if(inyear!=null&&!"".equals(inyear)) {student.setInYear(Integer.parseInt(inyear));}
             if(phone!=null&&!"".equals(phone)){student.setPhone(Long.parseLong(phone));}
