@@ -60,6 +60,10 @@ public class LoginController {
             //登录失败:密码错误
             return Result.error("密码错误");
         }
+        catch (Exception e)
+        {
+            return Result.error(e.getMessage());
+        }
     }
     @ResponseBody
     @GetMapping("noauth")

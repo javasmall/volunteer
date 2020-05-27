@@ -109,5 +109,16 @@ public class workService {
 
 
     }
+//所有活动
+    public List<workInformation> getallwork(String workid) {
+        if(workid==null)
+        return workInformationMapper.getallwork();
+        else
+        {
+            List<workInformation>list=new ArrayList<>();
+            list.add(workInformationMapper.selectByPrimaryKey(Integer.parseInt(workid)));
+            return list;
+        }
 
+    }
 }

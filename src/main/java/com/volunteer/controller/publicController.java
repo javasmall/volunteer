@@ -2,11 +2,10 @@ package com.volunteer.controller;
 
 import com.volunteer.Result.Result;
 import com.volunteer.dao.studentMapper;
-import com.volunteer.pojo.campus;
-import com.volunteer.pojo.college;
-import com.volunteer.pojo.department;
-import com.volunteer.pojo.major;
+import com.volunteer.pojo.*;
 import com.volunteer.service.*;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -16,6 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 
 @RestController
+@Api("swagger2")
 @RequestMapping("public")
 public class publicController {
 
@@ -36,6 +36,7 @@ public class publicController {
     @Autowired(required = false)
     studentMapper studentMapper;
 
+    @ApiOperation(value = "接口标题介绍",notes = "接口详细介绍")
     @GetMapping("getallcampus")
     public List<campus>getcampus()
     {
@@ -50,6 +51,11 @@ public class publicController {
     public List<college>getallcolege()
     {
         return collegeService.getallcollege();
+    }
+    @GetMapping("getallwork")
+    public List<workInformation>getallwork(String workid)
+    {
+        return workService.getallwork(workid);
     }
     @GetMapping("getmajorbycollege")
     public List<major>getmajorbycollege(String college)

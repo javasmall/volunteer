@@ -3,6 +3,7 @@ package com.volunteer.dao;
 import com.volunteer.pojo.workInformation;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
+import org.apache.ibatis.annotations.Select;
 import org.apache.ibatis.annotations.Update;
 
 import java.util.List;
@@ -27,4 +28,7 @@ public interface workInformationMapper {
 
     @Update("update work_information set status=2 where id=#{id} and publisher_id=#{publisherid}")
     boolean cancelwork(@Param("id") int id,@Param("publisherid") long publisherid);
+
+    @Select("select * from work_information order by id desc")
+    List<workInformation> getallwork();
 }

@@ -50,6 +50,7 @@ public class ShiroConfig {
 //		filterMap.put("/**","anon");
 
 		filterMap.put("/index.html","anon");
+		filterMap.put("/swagger-ui.html","anon");
 		filterMap.put("/login", "anon");//要将登陆的接口放出来，不然没权限访问登陆的接口
 ////		filterMap.put("/getcontroller","anon");
 ////
